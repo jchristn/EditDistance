@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>netcoreapp3.1;net461;net48;net5.0;net6.0;net7.0</TargetFrameworks>
+		<Title>EditDistance</Title>
+		<Authors>Joel Christner</Authors>
+		<Company>Joel Christner</Company>
+		<Description>A simple library to assist in understanding edit distance algorithms.</Description>
+		<Copyright>(c)2023 Joel Christner</Copyright>
+		<PackageProjectUrl>https://github.com/jchristn/EditDistance</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/jchristn/EditDistance</RepositoryUrl>
+		<RepositoryType>github</RepositoryType>
+		<PackageTags>levenshtein edit distance wagner fischer</PackageTags>
+		<PackageReleaseNotes>Initial release</PackageReleaseNotes>
+	</PropertyGroup>
+
+</Project>

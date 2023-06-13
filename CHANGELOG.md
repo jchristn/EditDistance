@@ -2,9 +2,10 @@
 
 ## Current Version
 
-v1.0.0
+v1.0.x
 
 - Initial release
+- Integrated unit test pr and fixes from @Udi-Shemer
 
 ## Previous Versions
 

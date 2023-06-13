@@ -6,9 +6,10 @@ EditDistance is a simple library meant to show an implementation of different ed
 
 If you have any issues or feedback, please file an issue here in Github. We'd love to have you help by contributing code for new features, optimization to the existing codebase, ideas for future releases, or fixes!
 
-## New in v1.0.0
+## New in v1.0.x
 
 - Initial release
+- Integrated unit test pr and fixes from @Udi-Shemer
 
 ## It's Easy
 

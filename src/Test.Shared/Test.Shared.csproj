@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+		<IsPackable>false</IsPackable>
+		<RootNamespace>EditDistance.Test.Shared</RootNamespace>
+		<AssemblyName>EditDistance.Test.Shared</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Touchstone.Core" Version="0.1.12" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\EditDistance\EditDistance.csproj" />
+	</ItemGroup>
+
+</Project>

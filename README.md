@@ -16,7 +16,7 @@ If you have any issues or feedback, please file an issue here in Github. We'd lo
 Build and run the ```Test.Levenshtein``` project.
 
 ```
-C:\Code\Misc\EditDistance\src\Test.Levenshtein\bin\Debug\net7.0>Test.Levenshtein
+C:\Code\Misc\EditDistance\src\Test.Levenshtein\bin\Debug\net48>Test.Levenshtein
 
 Press ENTER to exit
 String 1: Joel

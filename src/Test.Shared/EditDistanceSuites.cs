@@ -38,6 +38,8 @@ namespace EditDistance.Test.Shared
                     SingleEditOperationSuite(),
                     ClassicLevenshteinSuite(),
                     CaseAndCharacterSuite(),
+                    WhitespaceSuite(),
+                    PrefixSuffixSuite(),
                     MigratedLegacySuite(),
                     AlgorithmPropertySuite(),
                     DisplayMatrixSuite()
@@ -225,6 +227,53 @@ namespace EditDistance.Test.Shared
         }
 
         /// <summary>
+        /// Whitespace-only inputs. These are non-null and non-empty, so the constructor accepts
+        /// them (unlike the null/empty negative cases) and whitespace is treated as ordinary
+        /// characters rather than being trimmed or collapsed.
+        /// </summary>
+        private static TestSuiteDescriptor WhitespaceSuite()
+        {
+            const string id = "Whitespace";
+
+            return new TestSuiteDescriptor(
+                id,
+                "Whitespace-only inputs are valid content",
+                DistanceCases(id, new[]
+                {
+                    Data(" ", " ", 0),          // identical single space
+                    Data("   ", "   ", 0),      // identical run of spaces
+                    Data(" ", "  ", 1),         // insert one space
+                    Data("  ", " ", 1),         // delete one space
+                    Data(" ", "\t", 1),         // space vs tab is a substitution
+                    Data("a b", "a  b", 1),     // insert a space inside content
+                    Data(" a ", "a", 2),        // strip a leading and a trailing space
+                    Data("\t", "\n", 1)         // tab vs newline is a substitution
+                }));
+        }
+
+        /// <summary>
+        /// Prefix and suffix containment: when one string is obtained from the other purely by
+        /// adding characters at the front or back, the distance equals the length difference.
+        /// </summary>
+        private static TestSuiteDescriptor PrefixSuffixSuite()
+        {
+            const string id = "PrefixSuffix";
+
+            return new TestSuiteDescriptor(
+                id,
+                "Prefix / suffix containment equals the length difference",
+                DistanceCases(id, new[]
+                {
+                    Data("cat", "cathedral", 6),      // append a suffix
+                    Data("cathedral", "cat", 6),      // remove a suffix (symmetric)
+                    Data("book", "bookkeeper", 6),    // append a suffix
+                    Data("ring", "string", 2),        // prepend a prefix
+                    Data("string", "ring", 2),        // remove a prefix (symmetric)
+                    Data("test", "testing", 3)        // append a suffix
+                }));
+        }
+
+        /// <summary>
         /// The exact cases carried over from the original MSTest suite, preserved verbatim so
         /// nothing is lost in the migration to Touchstone.
         /// </summary>
@@ -303,6 +352,41 @@ namespace EditDistance.Test.Shared
                 TestAssert.True(Distance("anything", "different") >= 0, "Distance must be non-negative");
                 TestAssert.True(Distance("x", "y") >= 0, "Distance must be non-negative");
             }));
+
+            // Identity of indiscernibles: distinct strings always have a strictly positive distance.
+            cases.Add(Case(id, "PositiveForDistinct", "Distinct strings have a strictly positive distance", ct =>
+            {
+                TestAssert.True(Distance("abc", "abd") >= 1, "Distinct strings must differ by at least one edit");
+                TestAssert.True(Distance("x", "y") >= 1, "Distinct strings must differ by at least one edit");
+                TestAssert.True(Distance("hello", "world") >= 1, "Distinct strings must differ by at least one edit");
+            }));
+
+            // Triangle inequality: distance is a metric, so d(a,c) <= d(a,b) + d(b,c).
+            string[][] triples = new[]
+            {
+                new[] { "kitten", "sitting", "kitchen" },
+                new[] { "book", "back", "buck" },
+                new[] { "flaw", "lawn", "flan" },
+                new[] { "abc", "xyz", "abz" },
+                new[] { "intention", "execution", "extension" }
+            };
+
+            foreach (string[] triple in triples)
+            {
+                string a = triple[0];
+                string b = triple[1];
+                string c = triple[2];
+
+                cases.Add(Case(id, "Triangle_" + a + "_" + b + "_" + c,
+                    "Triangle inequality holds for \"" + a + "\", \"" + b + "\", \"" + c + "\"", ct =>
+                    {
+                        int direct = Distance(a, c);
+                        int viaB = Distance(a, b) + Distance(b, c);
+                        TestAssert.True(direct <= viaB,
+                            "Distance(" + a + "," + c + ")=" + direct +
+                            " must be <= Distance(" + a + "," + b + ")+Distance(" + b + "," + c + ")=" + viaB);
+                    }));
+            }
 
             return new TestSuiteDescriptor(id, "Algorithm invariants", cases);
         }

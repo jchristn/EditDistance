@@ -13,6 +13,8 @@
 		<PackageTags>levenshtein edit distance wagner fischer</PackageTags>
 		<PackageReleaseNotes>Integrate unit tests and fixes from @Udi-Shemer</PackageReleaseNotes>
 		<Version>1.0.1</Version>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	</PropertyGroup>
 
 </Project>
